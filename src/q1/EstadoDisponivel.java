@@ -9,15 +9,15 @@ package q1;
  *
  * @author thale
  */
-    public class EstadoAtivo implements State {
+    public class EstadoDisponivel implements State {
 
    public void doAction(Conta context) {
-      System.out.println("Conta está ativa");
+      System.out.println("Conta está disponivel");
       context.setState(this);	
    }
 
    public String toString(){
-      return "Conta Ativa";
+      return "Conta Disponivel";
    }
     
 }

@@ -15,7 +15,7 @@ public class Main {
 
     private static double aux;
     static Scanner input = new Scanner(System.in);
-    static int opçao = 1;
+    static int opçao = 1, aux2 = 0;
 
     /**
      * @param args the command line arguments
@@ -23,45 +23,41 @@ public class Main {
     public static void main(String[] args) {
         Conta contanova = new Conta();
         Correntista clientenovo = new Correntista();
-
-        EstadoInativo estadoInicial = new EstadoInativo();
+        EstadoDevedor estadoDevedor = new EstadoDevedor();
+        EstadoDisponivel estadoDisponivel = new EstadoDisponivel();
 
         System.out.println("Insira o seu CPF");
         aux = input.nextDouble();
         clientenovo.setCpf(aux);
-        System.out.println("Iremos checar o estado de sua conta...");
-        estadoInicial.doAction(contanova);
+        estadoDisponivel.doAction(contanova);
 
-        {
-            System.out.println("Gostaria de ativar a sua conta?\n1 - Sim\n0 - Não");
-            aux = input.nextInt();
-            if (aux == 1) {
-                EstadoAtivo estadoAtual = new EstadoAtivo();
-                estadoAtual.doAction(contanova);
+        Thread t = new Thread() {
+            long endTime = System.currentTimeMillis();
+            public void run() {
+            }
+        };
+        long startTime = System.nanoTime();
+        t.start();
+        while (opçao != 0) {
+            System.out.println("O que deseja fazer ?\n1 - Saque \n2 - Depósito\n3 - Simular juros\n0 - Sair");
+            opçao = input.nextInt();
+            if (opçao == 1) {
+                System.out.println("Deseja sacar quanto? \n");
+                aux = input.nextDouble();
+                contanova.realizarSaque(contanova, aux);
 
-                while (opçao != 0) {
-                    System.out.println("O que deseja fazer ?\n1 - Saque \n2 - Depósito\n3 - Fechar conta\n0 - Sair");
-                    opçao = input.nextInt();
-                    if (opçao == 1) {
-                        System.out.println("Deseja sacar quanto? \n");
-                        aux = input.nextDouble();
-                        contanova.realizarSaque(contanova, aux);
+            } else if (opçao == 2) {
+                System.out.println("Deseja depositar quanto? \n");
+                aux = input.nextDouble();
+                contanova.realizarDeposito(contanova, aux);
 
-                    } else if (opçao == 2) {
-                        System.out.println("Deseja depositar quanto? \n");
-                        aux = input.nextDouble();
-                        contanova.realizarDeposito(contanova, aux);
-
-                    } else if (opçao == 3) {
-                        System.out.println("Deseja cancelar sua conta? \n");
-                        estadoInicial.doAction(contanova);
-
-                    }
-                }
-                contanova.checarFundos(contanova);
-            } else {
-                opçao = 0;
+            } else if (opçao == 3) {
+                System.out.println("Insira o numero de meses para a simualação \n");
+                long endTime = System.nanoTime();
+                long time = (endTime - startTime)/1000000;
+                contanova.checarFundos(contanova, estadoDevedor, time);
             }
         }
+        System.out.println("Saldo final de : " + contanova.getSaldo());
     }
 }

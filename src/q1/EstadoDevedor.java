@@ -9,14 +9,14 @@ package q1;
  *
  * @author thale
  */
-public class EstadoInativo implements State {
+public class EstadoDevedor implements State {
 
    public void doAction(Conta context) {
-      System.out.println("Conta está inativa");
+      System.out.println("Conta está com saldo devedor");
       context.setState(this);	
    }
 
    public String toString(){
-      return "Conta Inativa";
+      return "Conta Devedora";
    }
 }

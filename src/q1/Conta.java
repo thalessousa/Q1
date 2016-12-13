@@ -70,10 +70,14 @@ public class Conta {
         this.saldo = (float) (this.saldo + aux);
         System.out.println("Saldo atual :" + contanova.saldo);
     }
-    public void checarFundos(Conta contanova){
-        if (contanova.saldo < -1 ){
-            this.saldo = this.saldo + this.saldo/10;
-            System.out.println("Foi aplicado : "+this.saldo/10+" em sua conta");
+
+    public void checarFundos(Conta contanova, EstadoDevedor estadoDevedor, long time) {
+        
+        if (contanova.saldo < -1) {
+            this.saldo = (this.saldo + this.saldo /time );
+            System.out.println("Foi aplicado : " + this.saldo /time + " em sua conta\nSeu saldo atual é de : " + this.saldo);
+
         }
+        estadoDevedor.doAction(contanova);
     }
 }
